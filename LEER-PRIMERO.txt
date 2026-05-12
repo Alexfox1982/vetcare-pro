@@ -1,0 +1,290 @@
+================================================================================
+                    VETCARE PRO - LEER PRIMERO
+================================================================================
+
+Bienvenido a VetCare Pro - Sistema Veterinario con Base de Datos
+
+================================================================================
+                         ¿QUÉ QUIERES HACER?
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  FLUJO RECOMENDADO: XAMPP Local → Servidor Web                              │
+│                                                                             │
+│  1. PRIMERO: Instala en tu PC con XAMPP para probar y configurar           │
+│  2. DESPUÉS: Exporta y sube a un servidor web para uso real                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                         GUÍAS DISPONIBLES
+================================================================================
+
+📘 PARA EMPEZAR (XAMPP Local):
+   GUIA-XAMPP-A-SERVIDOR.txt        <- FLUJO COMPLETO (recomendada)
+   GUIA-XAMPP-COMPLETA.txt          <- Solo instalación XAMPP
+   
+📗 PARA SERVIDOR WEB:
+   GUIA-SERVIDOR-PRODUCCION.txt     <- VPS, Cloud, cPanel, Heroku
+   
+📋 REFERENCIA RÁPIDA:
+   README-INSTALACION-RAPIDA.txt    <- Comandos rápidos
+   README.md                        <- Documentación técnica
+
+
+================================================================================
+                    RUTA 1: INSTALAR EN PC CON XAMPP
+================================================================================
+
+⏱️ Tiempo estimado: 15-20 minutos
+
+REQUISITOS:
+   ✓ Windows 10/11
+   ✓ XAMPP (descargar de apachefriends.org)
+   ✓ Node.js (descargar de nodejs.org)
+
+PASOS:
+
+1. INSTALAR PROGRAMAS
+   - Instala XAMPP en C:\xampp
+   - Instala Node.js (versión LTS)
+   - Reinicia tu PC
+
+2. EXTRAER VETCARE PRO
+   - Extrae este ZIP en: C:\xampp\htdocs\
+   - Debe quedar: C:\xampp\htdocs\vetcare-server\
+
+3. EJECUTAR INSTALADOR
+   - Ve a: C:\xampp\htdocs\vetcare-server\
+   - Haz doble clic en: INSTALAR-XAMPP.bat
+   - Sigue las instrucciones en pantalla
+
+4. INICIAR EL SISTEMA
+   - Haz doble clic en: INICIAR-SERVIDOR.bat
+   - O desde CMD: cd server && npm start
+
+5. ACCEDER
+   - Abre navegador en: http://localhost:3000
+   - Inicia sesión con: admin@vetcare.com / 123456
+
+
+================================================================================
+              RUTA 2: EXPORTAR Y SUBIR AL SERVIDOR WEB
+================================================================================
+
+⏱️ Tiempo estimado: 30-60 minutos (depende del servidor)
+
+Cuando estés listo para ponerlo online:
+
+OPCIÓN A: Exportar automáticamente (RECOMENDADO)
+────────────────────────────────────────────────
+1. En tu PC, ve a: C:\xampp\htdocs\vetcare-server\
+2. Haz doble clic en: EXPORTAR-PARA-SERVIDOR.bat
+3. Se creará en tu Escritorio: vetcare-para-servidor.zip
+4. Sube ese ZIP a tu servidor
+5. Sigue las instrucciones que incluye el ZIP
+
+
+OPCIÓN B: Manual
+────────────────
+1. Copia estos archivos de tu PC:
+   - C:\xampp\htdocs\vetcare-server\server\ (carpeta completa)
+   - C:\xampp\htdocs\vetcare-server\client\dist\ (solo dist)
+   - C:\xampp\htdocs\vetcare-server\server\database.sqlite (tus datos)
+
+2. Súbelos a tu servidor en: /var/www/vetcare/
+
+3. En el servidor, ejecuta:
+   cd /var/www/vetcare/server
+   npm install
+   pm2 start server.js --name vetcare
+
+
+================================================================================
+                         OPCIONES DE SERVIDOR WEB
+================================================================================
+
+┌─────────────────┬──────────────┬─────────────┬─────────────────────────────┐
+│ OPCIÓN          │ DIFICULTAD   │ PRECIO      │ IDEAL PARA                  │
+├─────────────────┼──────────────┼─────────────┼─────────────────────────────┤
+│ VPS             │ Media        │ $5-20/mes   │ Clínicas con varias PCs     │
+│ (DigitalOcean,  │              │             │ que necesitan acceso        │
+│  Linode, Vultr) │              │             │ simultáneo                  │
+├─────────────────┼──────────────┼─────────────┼─────────────────────────────┤
+│ Heroku          │ Baja         │ Gratis-$7   │ Pruebas o clínicas pequeñas │
+│                 │              │             │ con poco tráfico            │
+├─────────────────┼──────────────┼─────────────┼─────────────────────────────┤
+│ Railway         │ Baja         │ Gratis-$5   │ Similar a Heroku            │
+├─────────────────┼──────────────┼─────────────┼─────────────────────────────┤
+│ cPanel +        │ Media        │ $5-15/mes   │ Si ya tienes hosting        │
+│ Node.js         │              │             │ con cPanel                  │
+└─────────────────┴──────────────┴─────────────┴─────────────────────────────┘
+
+
+RECOMENDACIÓN:
+   Para una clínica veterinaria real, usa un VPS (DigitalOcean, Linode).
+   Es más estable, rápido y tienes control total.
+
+
+================================================================================
+                         ARCHIVOS IMPORTANTES
+================================================================================
+
+SCRIPTS DE INSTALACIÓN:
+   INSTALAR-XAMPP.bat           <- Instalación automática XAMPP
+   INSTALAR.bat                 <- Instalación estándar Windows
+   instalar-linux.sh            <- Instalación Linux
+   INICIAR-SERVIDOR.bat         <- Iniciar servidor
+   INICIAR-DESARROLLO.bat       <- Modo desarrollo
+
+HERRAMIENTAS DE MIGRACIÓN:
+   EXPORTAR-PARA-SERVIDOR.bat   <- Prepara archivos para servidor
+   BACKUP-DATOS.bat             <- Backup de base de datos
+
+DOCUMENTACIÓN:
+   LEER-PRIMERO.txt             <- Este archivo
+   GUIA-XAMPP-A-SERVIDOR.txt    <- FLUJO COMPLETO
+   GUIA-XAMPP-COMPLETA.txt      <- Solo XAMPP
+   GUIA-SERVIDOR-PRODUCCION.txt <- Servidor web
+   README-INSTALACION-RAPIDA.txt<- Referencia rápida
+
+CONFIGURACIÓN:
+   httpd-vhosts.conf            <- Configuración Apache
+   server/.htaccess             <- Configuración Apache
+
+
+================================================================================
+                         USUARIOS DE DEMO
+================================================================================
+
+Una vez instalado, inicia sesión con cualquiera de estos:
+
+  ┌───────────────────────────┬──────────┬────────────────────────────┐
+  │ EMAIL                     │ PASSWORD │ ROL                        │
+  ├───────────────────────────┼──────────┼────────────────────────────┤
+  │ admin@vetcare.com         │ 123456   │ Administrador (todo)       │
+  │ medico@vetcare.com        │ 123456   │ Médico (pacientes, historial)│
+  │ secretaria@vetcare.com    │ 123456   │ Secretaria (citas, personal)│
+  │ recepcionista@vetcare.com │ 123456   │ Recepcionista (citas, registro)│
+  └───────────────────────────┴──────────┴────────────────────────────┘
+
+
+================================================================================
+                         SOLUCIÓN RÁPIDA DE PROBLEMAS
+================================================================================
+
+PROBLEMA: "node no se reconoce"
+→ Instala Node.js desde nodejs.org y reinicia
+
+PROBLEMA: "Puerto 3000 en uso"
+→ Mata el proceso: netstat -ano | findstr :3000
+→ taskkill /PID [NUMERO] /F
+
+PROBLEMA: Pantalla en blanco
+→ El servidor debe estar corriendo
+→ Verifica: http://localhost:3000 (no file://)
+
+PROBLEMA: No puedo iniciar sesión
+→ Verifica que database.sqlite exista
+→ Ejecuta: npm run setup
+
+PROBLEMA: Error al exportar
+→ Asegúrate de que el frontend esté compilado (client/dist)
+→ Ejecuta: cd client && npm install && npm run build
+
+
+================================================================================
+                         FLUJO DE TRABAJO RECOMENDADO
+================================================================================
+
+FASE 1: PRUEBA LOCAL (1-2 días)
+   1. Instala con XAMPP en tu PC
+   2. Prueba todas las funcionalidades
+   3. Configura usuarios reales
+   4. Agrega datos de prueba
+   5. Capacita al personal
+
+FASE 2: PREPARACIÓN (1 día)
+   1. Limpia datos de prueba
+   2. Configura contraseñas seguras
+   3. Haz backup de database.sqlite
+   4. Exporta con EXPORTAR-PARA-SERVIDOR.bat
+
+FASE 3: DESPLIEGUE (1-2 horas)
+   1. Contrata VPS (DigitalOcean, Linode)
+   2. Sube archivos al servidor
+   3. Instala dependencias
+   4. Configura Nginx + SSL
+   5. Prueba desde varios dispositivos
+
+FASE 4: PRODUCCIÓN
+   1. Configura backups automáticos
+   2. Monitorea logs periódicamente
+   3. Actualiza según necesites
+
+
+================================================================================
+                         COMANDOS ÚTILES
+================================================================================
+
+WINDOWS (CMD):
+   cd C:\xampp\htdocs\vetcare-server\server
+   npm start                    <- Iniciar servidor
+   npm run setup                <- Crear datos demo
+   pm2 status                   <- Ver estado (si tienes PM2)
+
+LINUX/SERVIDOR:
+   cd /var/www/vetcare/server
+   npm install                  <- Instalar dependencias
+   npm start                    <- Iniciar (desarrollo)
+   pm2 start server.js          <- Iniciar (producción)
+   pm2 status                   <- Ver estado
+   pm2 logs vetcare             <- Ver logs
+   pm2 restart vetcare          <- Reiniciar
+
+
+================================================================================
+                         CARACTERÍSTICAS DEL SISTEMA
+================================================================================
+
+✓ Backend: Node.js + Express + SQLite
+✓ Frontend: React + TypeScript + Tailwind CSS
+✓ API REST completa
+✓ Autenticación con roles jerárquicos
+✓ Gestión de dueños y mascotas
+✓ Historial clínico detallado
+✓ Calendario de citas con vistas diaria/semanal
+✓ Control de turnos del personal
+✓ Diseño 100% responsivo
+✓ Base de datos en archivo (fácil backup)
+
+
+================================================================================
+                         ¿NECESITAS AYUDA?
+================================================================================
+
+1. Lee la guía específica para tu caso:
+   - XAMPP Local: GUIA-XAMPP-A-SERVIDOR.txt
+   - Servidor Web: GUIA-SERVIDOR-PRODUCCION.txt
+
+2. Verifica los logs:
+   - Ventana del servidor (errores rojos)
+   - Navegador F12 → Consola
+
+3. Comandos de diagnóstico:
+   - pm2 logs vetcare
+   - pm2 status
+   - netstat -ano | findstr :3000
+
+
+================================================================================
+                         ¡ÉXITO CON TU CLÍNICA!
+================================================================================
+
+VetCare Pro está diseñado para hacer la gestión de tu clínica veterinaria
+más eficiente. Desde el registro de pacientes hasta el control de citas,
+todo en un solo lugar.
+
+¡Gracias por usar VetCare Pro! 🐕🐈
+
+================================================================================

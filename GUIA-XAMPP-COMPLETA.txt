@@ -1,0 +1,356 @@
+================================================================================
+                    VETCARE PRO - GUÍA XAMPP COMPLETA
+================================================================================
+
+Este documento explica PASO A PASO cómo instalar VetCare Pro con XAMPP.
+
+================================================================================
+                         PARTE 1: INSTALAR XAMPP
+================================================================================
+
+PASO 1.1: Descargar XAMPP
+--------------------------
+1. Ve a: https://www.apachefriends.org/es/download.html
+2. Descarga XAMPP para Windows (versión con PHP 8.x)
+3. El archivo se llama algo como: xampp-windows-x64-8.x.x-x-XAMPP.exe
+
+
+PASO 1.2: Instalar XAMPP
+------------------------
+1. Ejecuta el instalador descargado
+2. Si Windows muestra advertencia, haz clic en "Más información" → "Ejecutar de todos modos"
+3. En el asistente de instalación:
+   
+   PANTALLA 1 (Bienvenida):
+   - Haz clic en "Next"
+   
+   PANTALLA 2 (Selección de componentes):
+   - MARCAR: Apache (obligatorio)
+   - MARCAR: MySQL (opcional, no lo usaremos pero puede servir)
+   - MARCAR: PHP (obligatorio)
+   - MARCAR: phpMyAdmin (opcional)
+   - Haz clic en "Next"
+   
+   PANTALLA 3 (Carpeta de instalación):
+   - Deja la ruta por defecto: C:\xampp
+   - Haz clic en "Next"
+   
+   PANTALLA 4 (Idioma):
+   - Selecciona "English"
+   - Haz clic en "Next"
+   
+   PANTALLA 5 (Bitnami):
+   - DESMARCA la casilla "Learn more about Bitnami for XAMPP"
+   - Haz clic en "Next"
+   
+   PANTALLA 6 (Listo para instalar):
+   - Haz clic en "Next"
+   
+   ESPERA a que termine la instalación...
+   
+   PANTALLA 7 (Finalizado):
+   - Haz clic en "Finish"
+
+
+================================================================================
+                         PARTE 2: INSTALAR NODE.JS
+================================================================================
+
+PASO 2.1: Descargar Node.js
+----------------------------
+1. Ve a: https://nodejs.org/es/
+2. Descarga la versión "LTS" (Long Term Support - Soporte a largo plazo)
+3. El archivo será: node-vxx.x.x-x64.msi
+
+
+PASO 2.2: Instalar Node.js
+---------------------------
+1. Ejecuta el instalador descargado
+2. En el asistente:
+   - Haz clic en "Next"
+   - Acepta el acuerdo de licencia → "Next"
+   - Deja la carpeta por defecto → "Next"
+   - Deja las opciones por defecto → "Next"
+   - Haz clic en "Install"
+   - Si pide permisos de administrador, acepta
+   - Espera a que termine
+   - Haz clic en "Finish"
+
+
+PASO 2.3: Verificar instalación
+--------------------------------
+1. Abre el "Símbolo del sistema" (CMD)
+   - Presiona Windows + R
+   - Escribe: cmd
+   - Presiona Enter
+
+2. Escribe estos comandos y verifica:
+   
+   node --version
+   (Debe mostrar algo como: v18.17.0 o superior)
+   
+   npm --version
+   (Debe mostrar algo como: 9.6.7 o superior)
+
+
+================================================================================
+                         PARTE 3: COPIAR ARCHIVOS
+================================================================================
+
+PASO 3.1: Extraer VetCare Pro
+------------------------------
+1. Extrae el archivo ZIP de VetCare Pro
+2. Verás una carpeta llamada "vetcare-server"
+
+
+PASO 3.2: Copiar a XAMPP
+-------------------------
+1. Copia la carpeta "vetcare-server" COMPLETA
+2. Pégala en: C:\xampp\htdocs\
+
+La estructura debe quedar:
+   C:\xampp\htdocs\vetcare-server\
+      ├── server\
+      ├── client
+      ├── INSTALAR.bat
+      ├── INICIAR-SERVIDOR.bat
+      └── README.md
+
+
+================================================================================
+                         PARTE 4: INSTALAR DEPENDENCIAS
+================================================================================
+
+PASO 4.1: Abrir terminal en la carpeta
+---------------------------------------
+1. Abre el Explorador de archivos
+2. Navega a: C:\xampp\htdocs\vetcare-server\server\
+3. En la barra de direcciones (donde dice el path), escribe: cmd
+4. Presiona Enter
+   
+   Se abrirá una ventana de comandos en esa ubicación
+
+
+PASO 4.2: Instalar dependencias
+--------------------------------
+En la ventana de comandos, escribe:
+
+   npm install
+
+Espera a que termine (puede tardar 1-5 minutos dependiendo de tu internet)
+Verás muchas líneas de texto descargando paquetes.
+
+Cuando termine, verás algo como:
+   added XXX packages in XXs
+
+
+PASO 4.3: Configurar base de datos
+-----------------------------------
+En la misma ventana de comandos, escribe:
+
+   npm run setup
+
+Esto creará la base de datos SQLite con datos de ejemplo.
+Verás mensajes como:
+   ✓ Usuario: Administrador (admin)
+   ✓ Dueño: Juan Perez
+   ✓ Mascota: Max (perro)
+   etc...
+
+
+================================================================================
+                         PARTE 5: INICIAR EL SERVIDOR
+================================================================================
+
+OPCIÓN A: Usar el archivo batch (MÁS FÁCIL)
+-------------------------------------------
+1. Ve a: C:\xampp\htdocs\vetcare-server\
+2. Haz doble clic en: INICIAR-SERVIDOR.bat
+3. Se abrirá una ventana negra con el servidor corriendo
+4. NO CIERRES esa ventana mientras uses la aplicación
+
+
+OPCIÓN B: Desde la terminal
+----------------------------
+1. Abre CMD en: C:\xampp\htdocs\vetcare-server\server\
+2. Escribe: npm start
+3. El servidor iniciará
+
+
+VERIFICAR QUE FUNCIONA:
+-----------------------
+Abre tu navegador y escribe:
+   http://localhost:3000
+
+Debes ver la pantalla de login de VetCare Pro.
+
+
+================================================================================
+                         PARTE 6: ACCESO DESDE OTRAS PCs
+================================================================================
+
+Si quieres que otras computadoras en tu red accedan:
+
+PASO 6.1: Obtener tu IP local
+------------------------------
+1. Abre CMD
+2. Escribe: ipconfig
+3. Busca "Dirección IPv4" (algo como 192.168.1.XX)
+
+
+PASO 6.2: Configurar firewall (si es necesario)
+------------------------------------------------
+1. Abre "Firewall de Windows Defender"
+2. Haz clic en "Configuración avanzada"
+3. Ve a "Reglas de entrada" → "Nueva regla"
+4. Selecciona "Puerto" → Siguiente
+5. Selecciona "TCP", escribe: 3000 → Siguiente
+6. "Permitir la conexión" → Siguiente
+7. Marca todos los perfiles → Siguiente
+8. Nombre: "VetCare Pro" → Finalizar
+
+
+PASO 6.3: Acceder desde otra PC
+--------------------------------
+En la otra computadora, abre el navegador y escribe:
+   http://192.168.1.XX:3000
+   (Reemplaza XX con tu número de IP)
+
+
+================================================================================
+                         SOLUCIÓN DE PROBLEMAS
+================================================================================
+
+PROBLEMA: "node no se reconoce como comando"
+SOLUCIÓN: 
+   - Cierra y vuelve a abrir la terminal CMD
+   - Si persiste, reinstala Node.js y reinicia la computadora
+
+
+PROBLEMA: "npm install" da errores
+SOLUCIÓN:
+   - Verifica tu conexión a internet
+   - Ejecuta CMD como administrador
+   - Prueba: npm cache clean --force
+   - Luego vuelve a intentar: npm install
+
+
+PROBLEMA: "Puerto 3000 ya está en uso"
+SOLUCIÓN:
+   - Abre CMD como administrador
+   - Escribe: netstat -ano | findstr :3000
+   - Verás un número al final (el PID)
+   - Escribe: taskkill /PID [NUMERO] /F
+   - Vuelve a iniciar el servidor
+
+
+PROBLEMA: Pantalla en blanco al abrir
+SOLUCIÓN:
+   - Verifica que el servidor esté corriendo (ventana negra abierta)
+   - Abre el navegador en: http://localhost:3000
+   - Presiona F12, ve a "Consola" y revisa errores rojos
+   - Si dice "Cannot GET /", el frontend no está compilado
+
+
+PROBLEMA: "Error: Cannot find module"
+SOLUCIÓN:
+   - Asegúrate de estar en la carpeta correcta (server)
+   - Ejecuta nuevamente: npm install
+
+
+PROBLEMA: No puedo iniciar sesión
+SOLUCIÓN:
+   - Verifica que la base de datos se creó (debe existir database.sqlite)
+   - Si no existe, ejecuta: npm run setup
+   - Usuarios de demo:
+     * admin@vetcare.com / 123456
+     * medico@vetcare.com / 123456
+
+
+================================================================================
+                         COMANDOS ÚTILES
+================================================================================
+
+INICIAR SERVIDOR:
+   cd C:\xampp\htdocs\vetcare-server\server
+   npm start
+
+DETENER SERVIDOR:
+   En la ventana del servidor, presiona Ctrl+C
+   Luego escribe: S y presiona Enter
+
+REINICIAR SERVIDOR:
+   Detén con Ctrl+C, luego ejecuta: npm start
+
+VER LOGS/ERRORES:
+   El servidor muestra los errores en la ventana negra
+
+BACKUP DE BASE DE DATOS:
+   Simplemente copia el archivo:
+   C:\xampp\htdocs\vetcare-server\server\database.sqlite
+
+RESTAURAR BASE DE DATOS:
+   1. Detén el servidor
+   2. Reemplaza database.sqlite con tu backup
+   3. Inicia el servidor
+
+RESETEAR DATOS (BORRAR TODO):
+   1. Detén el servidor
+   2. Elimina database.sqlite
+   3. Ejecuta: npm run setup
+   4. Inicia el servidor
+
+
+================================================================================
+                         CONFIGURACIÓN AVANZADA
+================================================================================
+
+CAMBIAR EL PUERTO (de 3000 a otro):
+------------------------------------
+1. Abre: C:\xampp\htdocs\vetcare-server\server\server.js
+2. Busca: const PORT = process.env.PORT || 3000;
+3. Cambia 3000 por tu puerto deseado (ej: 8080)
+4. Guarda el archivo
+5. Reinicia el servidor
+
+
+CAMBIAR LA CONTRASEÑA DE LOS USUARIOS:
+---------------------------------------
+1. Inicia sesión con el usuario admin
+2. Ve a "Personal"
+3. Haz clic en el lápiz del usuario que quieres cambiar
+4. Escribe la nueva contraseña
+5. Guarda los cambios
+
+
+================================================================================
+                         CONTACTO Y SOPORTE
+================================================================================
+
+Si tienes problemas que no puedes resolver:
+
+1. Revisa que seguiste TODOS los pasos en orden
+2. Verifica que tienes las últimas versiones de XAMPP y Node.js
+3. Reinicia tu computadora e intenta de nuevo
+4. Busca el error exacto en Google
+
+
+================================================================================
+                         RESUMEN RÁPIDO
+================================================================================
+
+1. Instalar XAMPP → https://apachefriends.org
+2. Instalar Node.js → https://nodejs.org
+3. Copiar vetcare-server a C:\xampp\htdocs\
+4. Abrir CMD en C:\xampp\htdocs\vetcare-server\server\
+5. Ejecutar: npm install
+6. Ejecutar: npm run setup
+7. Ejecutar: npm start
+8. Abrir navegador en: http://localhost:3000
+
+¡LISTO!
+
+
+================================================================================
+                         © 2024 VetCare Pro
+================================================================================

@@ -1,0 +1,422 @@
+================================================================================
+                    VETCARE PRO - GUÍA SERVIDOR PRODUCCIÓN
+================================================================================
+
+Esta guía explica cómo instalar VetCare Pro en un servidor de producción.
+
+================================================================================
+                         OPCIONES DE SERVIDOR
+================================================================================
+
+OPCIÓN 1: VPS (Servidor Virtual Privado)
+-----------------------------------------
+Proveedores recomendados:
+   - DigitalOcean: https://digitalocean.com (desde $5/mes)
+   - Linode: https://linode.com (desde $5/mes)
+   - Vultr: https://vultr.com (desde $5/mes)
+   - AWS Lightsail: https://aws.amazon.com/lightsail
+
+Sistema operativo recomendado: Ubuntu 22.04 LTS
+
+
+OPCIÓN 2: Hosting con Node.js
+------------------------------
+Proveedores que soportan Node.js:
+   - Heroku: https://heroku.com (tiene plan gratuito)
+   - Railway: https://railway.app (tiene plan gratuito)
+   - Render: https://render.com (tiene plan gratuito)
+   - Hostinger: https://hostinger.com (planes económicos)
+
+
+OPCIÓN 3: cPanel (Hosting compartido con Node.js)
+--------------------------------------------------
+Algunos hostings con cPanel permiten Node.js:
+   - A2 Hosting
+   - HostGator (planes superiores)
+   - SiteGround
+
+
+================================================================================
+                         INSTALACIÓN EN VPS (UBUNTU)
+================================================================================
+
+PASO 1: Conectarte al servidor
+-------------------------------
+Desde tu computadora (Windows), usa PuTTY o CMD:
+
+   ssh root@TU_IP_DEL_SERVIDOR
+
+Te pedirá la contraseña que te dio tu proveedor.
+
+
+PASO 2: Actualizar el sistema
+------------------------------
+Ejecuta:
+
+   apt update && apt upgrade -y
+
+
+PASO 3: Instalar Node.js
+-------------------------
+Ejecuta estos comandos:
+
+   # Instalar Node.js 18 LTS
+   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+   apt-get install -y nodejs
+
+   # Verificar instalación
+   node --version
+   npm --version
+
+
+PASO 4: Instalar PM2 (gestor de procesos)
+------------------------------------------
+PM2 mantiene tu aplicación siempre activa:
+
+   npm install -g pm2
+
+
+PASO 5: Subir archivos al servidor
+-----------------------------------
+OPCIÓN A: Usando SCP (desde tu PC Windows)
+   Abre CMD en la carpeta donde está el ZIP:
+   
+   scp vetcare-pro-servidor.zip root@TU_IP:/root/
+
+OPCIÓN B: Usando FileZilla o WinSCP
+   - Conecta por SFTP a tu servidor
+   - Sube el archivo vetcare-pro-servidor.zip
+   - Súbelo a /root/ o /home/tu-usuario/
+
+
+PASO 6: Extraer archivos en el servidor
+-----------------------------------------
+En el servidor (por SSH), ejecuta:
+
+   # Instalar unzip si no está
+   apt install unzip -y
+
+   # Crear carpeta para la aplicación
+   mkdir -p /var/www/vetcare
+   cd /var/www/vetcare
+
+   # Extraer archivos
+   unzip /root/vetcare-pro-servidor.zip
+
+   # Mover contenido
+   mv vetcare-server/* .
+   rm -rf vetcare-server
+
+
+PASO 7: Instalar dependencias
+------------------------------
+   cd /var/www/vetcare/server
+   npm install
+
+   # Configurar base de datos
+   npm run setup
+
+
+PASO 8: Configurar PM2
+-----------------------
+   # Iniciar aplicación con PM2
+   pm2 start server.js --name vetcare
+
+   # Guardar configuración
+   pm2 save
+
+   # Configurar inicio automático
+   pm2 startup systemd
+
+   # Copiar y ejecutar el comando que te muestra
+
+
+PASO 9: Instalar y configurar Nginx
+------------------------------------
+Nginx actúa como proxy inverso:
+
+   # Instalar Nginx
+   apt install nginx -y
+
+   # Crear configuración
+   nano /etc/nginx/sites-available/vetcare
+
+Pega este contenido (reemplaza tu-dominio.com o usa tu IP):
+
+   server {
+       listen 80;
+       server_name tu-dominio.com;  # O tu IP
+
+       location / {
+           proxy_pass http://localhost:3000;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+       }
+   }
+
+Guarda (Ctrl+O, Enter, Ctrl+X)
+
+   # Activar sitio
+   ln -s /etc/nginx/sites-available/vetcare /etc/nginx/sites-enabled/
+
+   # Verificar configuración
+   nginx -t
+
+   # Reiniciar Nginx
+   systemctl restart nginx
+
+
+PASO 10: Configurar firewall
+-----------------------------
+   # Permitir HTTP
+   ufw allow 80/tcp
+
+   # Permitir HTTPS (para después)
+   ufw allow 443/tcp
+
+   # Permitir SSH
+   ufw allow 22/tcp
+
+   # Activar firewall
+   ufw enable
+
+
+PASO 11: Probar la aplicación
+------------------------------
+Abre tu navegador y escribe:
+   http://TU_IP_DEL_SERVIDOR
+
+O si configuraste dominio:
+   http://tu-dominio.com
+
+
+================================================================================
+                         CONFIGURAR DOMINIO Y SSL (HTTPS)
+================================================================================
+
+PASO 1: Apuntar dominio al servidor
+------------------------------------
+En tu proveedor de dominio (GoDaddy, Namecheap, etc.):
+   - Crea un registro A que apunte a tu IP del servidor
+   - Ejemplo: vetcare.tudominio.com → 123.456.789.012
+
+
+PASO 2: Instalar Certbot (SSL gratuito)
+----------------------------------------
+   apt install certbot python3-certbot-nginx -y
+
+
+PASO 3: Obtener certificado SSL
+--------------------------------
+   certbot --nginx -d tu-dominio.com
+
+Sigue las instrucciones:
+   - Ingresa tu email
+   - Acepta los términos
+   - Elige si quieres redirigir HTTP a HTTPS (recomendado: Sí)
+
+
+PASO 4: Verificar renovación automática
+----------------------------------------
+   certbot renew --dry-run
+
+
+================================================================================
+                         COMANDOS DE MANTENIMIENTO
+================================================================================
+
+VER ESTADO DE LA APLICACIÓN:
+   pm2 status
+   pm2 logs vetcare
+
+REINICIAR APLICACIÓN:
+   pm2 restart vetcare
+
+DETENER APLICACIÓN:
+   pm2 stop vetcare
+
+INICIAR APLICACIÓN:
+   pm2 start vetcare
+
+VER LOGS EN TIEMPO REAL:
+   pm2 logs vetcare --lines 100
+
+ACTUALIZAR APLICACIÓN (nueva versión):
+   cd /var/www/vetcare
+   # Subir nuevos archivos
+   pm2 restart vetcare
+
+BACKUP DE BASE DE DATOS:
+   cp /var/www/vetcare/server/database.sqlite /root/backup-$(date +%Y%m%d).sqlite
+
+MONITOREO DE RECURSOS:
+   pm2 monit
+
+
+================================================================================
+                         INSTALACIÓN EN HEROKU (GRATIS)
+================================================================================
+
+PASO 1: Crear cuenta
+---------------------
+   Ve a https://heroku.com y crea una cuenta gratuita
+
+
+PASO 2: Instalar Heroku CLI
+----------------------------
+   https://devcenter.heroku.com/articles/heroku-cli
+
+
+PASO 3: Preparar el proyecto
+-----------------------------
+   cd vetcare-server/server
+
+   # Crear archivo Procfile
+   echo "web: node server.js" > Procfile
+
+   # Modificar server.js para usar puerto dinámico
+   # (Ya está configurado: const PORT = process.env.PORT || 3000)
+
+
+PASO 4: Subir a Heroku
+-----------------------
+   heroku login
+   heroku create vetcare-pro
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git push heroku main
+
+
+PASO 5: Configurar variables (si es necesario)
+-----------------------------------------------
+   heroku config:set NODE_ENV=production
+
+
+================================================================================
+                         INSTALACIÓN EN CPANEL
+================================================================================
+
+Algunos hostings con cPanel permiten aplicaciones Node.js:
+
+PASO 1: Verificar soporte Node.js
+----------------------------------
+   - Ingresa a tu cPanel
+   - Busca "Setup Node.js App" o "Node.js"
+   - Si no existe, contacta a tu hosting
+
+
+PASO 2: Crear aplicación Node.js
+---------------------------------
+   - Ve a "Setup Node.js App"
+   - Haz clic en "Create Application"
+   - Node.js version: 18.x
+   - Application mode: Production
+   - Application root: vetcare/server
+   - Application URL: tu-dominio.com/vetcare
+   - Application startup file: server.js
+   - Haz clic en "Create"
+
+
+PASO 3: Subir archivos
+-----------------------
+   - Usa File Manager de cPanel
+   - O sube por FTP
+   - Sube la carpeta vetcare-server a public_html/
+
+
+PASO 4: Instalar dependencias
+------------------------------
+   - En cPanel, ve a "Terminal" (si está disponible)
+   - O usa "Setup Node.js App" → "Run NPM Install"
+
+
+PASO 5: Configurar base de datos
+---------------------------------
+   - Desde Terminal en cPanel:
+   cd ~/public_html/vetcare/server
+   npm run setup
+
+
+================================================================================
+                         SOLUCIÓN DE PROBLEMAS EN SERVIDOR
+================================================================================
+
+ERROR: "EACCES: permission denied"
+SOLUCIÓN:
+   sudo chown -R $(whoami) /var/www/vetcare
+
+
+ERROR: "Port 3000 is already in use"
+SOLUCIÓN:
+   lsof -i :3000
+   kill -9 [PID]
+   pm2 restart vetcare
+
+
+ERROR: "Cannot find module"
+SOLUCIÓN:
+   cd /var/www/vetcare/server
+   rm -rf node_modules
+   npm install
+   pm2 restart vetcare
+
+
+ERROR: Nginx "502 Bad Gateway"
+SOLUCIÓN:
+   # Verificar que la app esté corriendo
+   pm2 status
+   
+   # Verificar logs
+   pm2 logs vetcare
+   
+   # Reiniciar
+   pm2 restart vetcare
+   systemctl restart nginx
+
+
+ERROR: "Command not found: pm2"
+SOLUCIÓN:
+   npm install -g pm2
+
+
+================================================================================
+                         RECURSOS Y REFERENCIAS
+================================================================================
+
+Documentación oficial:
+   - Node.js: https://nodejs.org/docs
+   - PM2: https://pm2.keymetrics.io/docs/
+   - Nginx: https://nginx.org/en/docs/
+   - Certbot: https://certbot.eff.org/docs/
+
+
+Comunidades:
+   - Stack Overflow: https://stackoverflow.com
+   - Reddit r/node: https://reddit.com/r/node
+
+
+================================================================================
+                         CHECKLIST DE PRODUCCIÓN
+================================================================================
+
+Antes de poner en producción, verifica:
+
+[ ] Cambiar contraseñas de usuarios demo
+[ ] Configurar backup automático de la base de datos
+[ ] Habilitar HTTPS (SSL)
+[ ] Configurar firewall
+[ ] Deshabilitar modo desarrollo
+[ ] Configurar monitoreo (PM2)
+[ ] Probar todas las funcionalidades
+[ ] Verificar logs de errores
+[ ] Configurar dominio personalizado
+[ ] Documentar accesos y contraseñas
+
+
+================================================================================
+                         © 2024 VetCare Pro
+================================================================================

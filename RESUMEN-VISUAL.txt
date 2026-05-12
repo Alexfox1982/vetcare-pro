@@ -1,0 +1,300 @@
+================================================================================
+                    VETCARE PRO - RESUMEN VISUAL
+================================================================================
+
+                    ┌─────────────────────────────┐
+                    │     VETCARE PRO             │
+                    │  Sistema Veterinario        │
+                    └─────────────────────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    │                               │
+            ┌───────▼────────┐              ┌───────▼────────┐
+            │   FASE 1       │              │   FASE 2       │
+            │   LOCAL        │──────────────│   SERVIDOR     │
+            │   (XAMPP)      │   Exportar   │   (Web)        │
+            └────────────────┘              └────────────────┘
+
+
+================================================================================
+                         FASE 1: INSTALACIÓN LOCAL
+================================================================================
+
+    ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+    │  Descargar  │────▶│  Instalar   │────▶│  Ejecutar   │
+    │   XAMPP     │     │  Node.js    │     │  INSTALAR   │
+    └─────────────┘     └─────────────┘     │  -XAMPP.bat │
+                                            └──────┬──────┘
+                                                   │
+                                            ┌──────▼──────┐
+                                            │  Iniciar    │
+                                            │  servidor   │
+                                            └──────┬──────┘
+                                                   │
+                                            ┌──────▼──────┐
+                                            │  Abrir      │
+                                            │  localhost  │
+                                            │  :3000      │
+                                            └─────────────┘
+
+COMANDOS CLAVE:
+  Instalar:  INSTALAR-XAMPP.bat
+  Iniciar:   INICIAR-SERVIDOR.bat
+  URL:       http://localhost:3000
+
+
+================================================================================
+                    FASE 2: EXPORTAR AL SERVIDOR
+================================================================================
+
+    ┌─────────────┐     ┌─────────────────┐     ┌─────────────┐
+    │   Haz       │────▶│  Se crea ZIP    │────▶│  Sube a     │
+    │   BACKUP    │     │  en Escritorio  │     │  servidor   │
+    │   primero   │     │                 │     │             │
+    └─────────────┘     └─────────────────┘     └──────┬──────┘
+                                                       │
+    ┌─────────────┐     ┌─────────────┐     ┌─────────▼─────┐
+    │  Configura  │◀────│   Prueba    │◀────│   Instala     │
+    │   dominio   │     │   en web    │     │   en VPS      │
+    │   y SSL     │     │             │     │               │
+    └─────────────┘     └─────────────┘     └───────────────┘
+
+COMANDOS CLAVE:
+  Exportar:  EXPORTAR-PARA-SERVIDOR.bat
+  Backup:    BACKUP-DATOS.bat
+  Subir:     scp vetcare-para-servidor.zip root@IP:/root/
+
+
+================================================================================
+                         ESTRUCTURA DE ARCHIVOS
+================================================================================
+
+vetcare-server/
+│
+├── 📚 DOCUMENTACIÓN (Lee primero)
+│   ├── LEER-PRIMERO.txt           ⭐ EMPIEZA AQUÍ
+│   ├── GUIA-XAMPP-A-SERVIDOR.txt  📘 Flujo completo
+│   ├── GUIA-XAMPP-COMPLETA.txt    📗 Solo XAMPP
+│   ├── GUIA-SERVIDOR-PRODUCCION   📙 VPS, Cloud, etc
+│   ├── README-INSTALACION-RAPIDA  📋 Referencia
+│   └── README.md                  📖 Técnico
+│
+├── ⚙️ SCRIPTS (Haz doble clic)
+│   ├── INSTALAR-XAMPP.bat         🔧 Instalar en PC
+│   ├── INICIAR-SERVIDOR.bat       ▶️ Iniciar sistema
+│   ├── EXPORTAR-PARA-SERVIDOR.bat 📤 Preparar servidor
+│   ├── BACKUP-DATOS.bat           💾 Backup base de datos
+│   ├── instalar-linux.sh          🐧 Linux
+│   └── INICIAR-DESARROLLO.bat     🛠️ Desarrollo
+│
+├── 💻 SERVIDOR (Backend Node.js)
+│   ├── server.js                  🖥️ API principal
+│   ├── database.js                💾 SQLite config
+│   ├── setup-db.js                📝 Datos demo
+│   └── package.json               📦 Dependencias
+│
+└── 🎨 CLIENTE (Frontend React)
+    ├── src/                       💻 Código fuente
+    └── dist/                      📦 Compilado (producción)
+
+
+================================================================================
+                         MAPA DE DECISIONES
+================================================================================
+
+    ¿Quieres probar primero en tu PC?
+            │
+    ┌───────┴───────┐
+    │               │
+   SÍ              NO
+    │               │
+    ▼               ▼
+┌─────────┐   ┌─────────────┐
+│  XAMPP  │   │  ¿Tienes    │
+│  Local  │   │  servidor?  │
+└────┬────┘   └──────┬──────┘
+     │               │
+     │          ┌────┴────┐
+     │          │         │
+     │         SÍ        NO
+     │          │         │
+     │          ▼         ▼
+     │    ┌─────────┐  ┌─────────────┐
+     │    │  VPS    │  │  Contrata   │
+     │    │  Cloud  │  │  DigitalOcean│
+     │    │  cPanel │  │  Linode     │
+     │    └────┬────┘  │  Vultr      │
+     │         │       └─────────────┘
+     │         │
+     └─────────┴──────────▶  EXPORTAR
+                              y SUBIR
+
+
+================================================================================
+                         FLUJO DE DATOS
+================================================================================
+
+    USUARIO
+       │
+       ▼
+┌─────────────┐
+│  Navegador  │
+│  (Chrome,   │
+│   Edge,     │
+│   Firefox)  │
+└──────┬──────┘
+       │ HTTP
+       ▼
+┌─────────────┐     ┌─────────────┐
+│   Nginx     │────▶│   Node.js   │
+│   (Proxy)   │     │   (API)     │
+│   Opcional  │     │             │
+└─────────────┘     └──────┬──────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │   SQLite    │
+                    │  (Archivo)  │
+                    │ database.   │
+                    │   sqlite    │
+                    └─────────────┘
+
+
+================================================================================
+                         COMANDOS RÁPIDOS
+================================================================================
+
+WINDOWS - XAMPP LOCAL:
+──────────────────────
+Instalar:
+  cd C:\xampp\htdocs\vetcare-server\server
+  npm install
+  npm run setup
+
+Iniciar:
+  npm start
+  # o
+  INICIAR-SERVIDOR.bat
+
+Exportar:
+  EXPORTAR-PARA-SERVIDOR.bat
+
+Backup:
+  BACKUP-DATOS.bat
+
+
+LINUX/SERVIDOR:
+───────────────
+Instalar:
+  cd /var/www/vetcare/server
+  npm install
+  npm run setup
+
+Iniciar (producción):
+  pm2 start server.js --name vetcare
+  pm2 save
+  pm2 startup
+
+Monitorear:
+  pm2 status
+  pm2 logs vetcare
+  pm2 monit
+
+
+================================================================================
+                         CHECKLIST: XAMPP → SERVIDOR
+================================================================================
+
+ANTES DE EXPORTAR:
+  ☐ Cambiar contraseñas de usuarios demo
+  ☐ Eliminar datos de prueba si es necesario
+  ☐ Verificar que todo funcione en localhost
+  ☐ Hacer backup de database.sqlite
+  ☐ Compilar frontend (npm run build)
+
+EXPORTAR:
+  ☐ Ejecutar EXPORTAR-PARA-SERVIDOR.bat
+  ☐ Verificar que se creó vetcare-para-servidor.zip
+  ☐ Copiar database.sqlite (si quieres mantener datos)
+
+SUBIR AL SERVIDOR:
+  ☐ Subir ZIP al servidor (scp, FTP, etc)
+  ☐ Extraer en /var/www/vetcare/
+  ☐ Instalar Node.js en servidor
+  ☐ Instalar PM2: npm install -g pm2
+  ☐ Instalar dependencias: npm install
+  ☐ Copiar database.sqlite (tus datos)
+  ☐ Iniciar: pm2 start server.js --name vetcare
+
+CONFIGURAR:
+  ☐ Configurar Nginx como proxy
+  ☐ Configurar dominio (registro A)
+  ☐ Configurar SSL (Certbot)
+  ☐ Configurar firewall (ufw)
+  ☐ Probar desde móvil/tablet
+
+PRODUCCIÓN:
+  ☐ Configurar backups automáticos
+  ☐ Documentar accesos y contraseñas
+  ☐ Capacitar al personal
+
+
+================================================================================
+                         PRECIOS APROXIMADOS
+================================================================================
+
+SERVIDOR VPS (Recomendado):
+  DigitalOcean:  $6-12 USD/mes
+  Linode:        $5-10 USD/mes
+  Vultr:         $5-10 USD/mes
+  AWS Lightsail: $5-10 USD/mes
+
+HOSTING CON NODE.JS:
+  Heroku:        Gratis-$7 USD/mes
+  Railway:       Gratis-$5 USD/mes
+  Render:        Gratis-$7 USD/mes
+
+DOMINIO:
+  .com:          $10-15 USD/año
+  .net:          $12-18 USD/año
+  .mx:           $15-20 USD/año
+
+SSL (HTTPS):
+  Let's Encrypt: ¡GRATIS!
+
+TOTAL ESTIMADO PRIMER AÑO:
+  VPS + Dominio + SSL = ~$80-150 USD/año
+
+
+================================================================================
+                         SOPORTE Y RECURSOS
+================================================================================
+
+DOCUMENTACIÓN OFICIAL:
+  Node.js:    https://nodejs.org/docs
+  PM2:        https://pm2.keymetrics.io/docs/
+  Nginx:      https://nginx.org/en/docs/
+  SQLite:     https://sqlite.org/docs.html
+
+COMUNIDADES:
+  Stack Overflow: https://stackoverflow.com
+  Reddit Node.js: https://reddit.com/r/node
+
+PROVEEDORES VPS:
+  DigitalOcean: https://digitalocean.com
+  Linode:       https://linode.com
+  Vultr:        https://vultr.com
+
+
+================================================================================
+                         ¡LISTO PARA COMENZAR!
+================================================================================
+
+1. Lee LEER-PRIMERO.txt
+2. Sigue GUIA-XAMPP-A-SERVIDOR.txt
+3. Instala en tu PC con XAMPP
+4. Cuando estés listo, exporta al servidor
+
+¡Éxito con tu clínica veterinaria! 🐕🐈🩺
+
+================================================================================
