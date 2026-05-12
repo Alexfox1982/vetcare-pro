@@ -1046,22 +1046,35 @@ if (!isLoggedIn) {
 
         <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
 
-          <div>
-            <h3 className="text-2xl font-black text-teal-400">
-              VetCare Pro
-            </h3>
+           <div className="flex flex-col sm:flex-row gap-4 mt-6">
 
-            <p className="text-slate-500 mt-2">
-              Plataforma Veterinaria Inteligente
-            </p>
-            <p className="text-slate-500 text-sm mt-1">
-               foxcomptja@gmail.com
-           </p>
+  {/* BOTÓN FOXCOMP */}
+  <a
+    href="https://foxcomp.netlify.app/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl transition-all shadow-lg hover:scale-105"
+  >
+    🦊
+    <span className="font-medium">
+      Visita nuestra web FOXCOMP
+    </span>
+  </a>
 
-           <p className="text-slate-500 text-sm">
-              +591 77172153
-           </p>
-          </div>
+  {/* BOTÓN WHATSAPP */}
+  <a
+    href="https://wa.me/59177172153"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-all shadow-lg hover:scale-105"
+  >
+    💬
+    <span className="font-medium">
+      Contactar por WhatsApp
+    </span>
+  </a>
+
+</div>          
 
           <div className="flex gap-8 text-slate-400">
 
